@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Muhammad Ubaid Idrees — AI Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: rgba(120,120,200,0.15);
+    --accent: #7c6fff;
+    --accent2: #3de8b0;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --dim: #3a3a5a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRID NOISE BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,111,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,111,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 36px;
+  }
+
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav ul a:hover { color: var(--accent2); }
+
+  /* MAIN WRAPPER */
+  main { position: relative; z-index: 1; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 60px 80px;
+    position: relative;
+  }
+
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 30px;
+    height: 1px;
+    background: var(--accent2);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 30px;
+    color: var(--text);
+  }
+
+  h1 .highlight { color: var(--accent); }
+  h1 .line2 { color: var(--muted); }
+
+  .hero-desc {
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 14px 28px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: #9585ff; transform: translateY(-2px); }
+
+  .btn-secondary {
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1px solid var(--dim);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* GLOW ORB */
+  .orb {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,111,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* SECTION COMMON */
+  section {
+    padding: 100px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    margin-bottom: 60px;
+    color: var(--text);
+  }
+
+  /* SKILLS SECTION */
+  #skills { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1px;
+    border: 1px solid var(--border);
+  }
+
+  .skill-group {
+    padding: 32px;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    transition: background 0.2s;
+  }
+
+  .skill-group:hover { background: var(--surface2); }
+  .skill-group:last-child { border-right: none; }
+
+  .skill-group-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border: 1px solid var(--dim);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* PROJECTS */
+  #projects { border-bottom: 1px solid var(--border); }
+
+  .projects-list { display: flex; flex-direction: column; gap: 1px; }
+
+  .project-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: start;
+    gap: 32px;
+    padding: 36px 0;
+    border-top: 1px solid var(--border);
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .project-item:hover { background: var(--surface); padding-left: 20px; margin-left: -20px; padding-right: 20px; margin-right: -20px; }
+
+  .project-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dim);
+    padding-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .project-body h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+
+  .project-body p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 16px;
+  }
+
+  .project-tech {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tech-pill {
+    font-size: 10px;
+    padding: 3px 10px;
+    background: rgba(124,111,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(124,111,255,0.2);
+    letter-spacing: 0.5px;
+  }
+
+  .project-arrow {
+    font-size: 24px;
+    color: var(--dim);
+    padding-top: 4px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .project-item:hover .project-arrow { color: var(--accent2); transform: translate(3px, -3px); }
+
+  /* EDUCATION & CERTS */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .edu-block, .cert-block {}
+
+  .timeline-item {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 32px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  .timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 20px;
+    width: 1px;
+    height: calc(100% + 10px);
+    background: var(--border);
+  }
+
+  .timeline-item:last-child::after { display: none; }
+
+  .timeline-date {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 6px;
+  }
+
+  .timeline-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  .timeline-sub {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .gpa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 5px 12px;
+    border: 1px solid rgba(61,232,176,0.3);
+    color: var(--accent2);
+    font-size: 11px;
+    letter-spacing: 1px;
+    background: rgba(61,232,176,0.05);
+  }
+
+  /* CONTACT */
+  #contact { text-align: center; background: var(--surface); border-top: 1px solid var(--border); }
+
+  #contact h2 { margin-left: auto; margin-right: auto; }
+
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    border: 1px solid var(--dim);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+
+  .contact-link:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(124,111,255,0.05);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 30px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--dim);
+    font-size: 11px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* SCROLL ANIMATIONS */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    nav ul { display: none; }
+    #hero, section { padding: 100px 24px 60px; }
+    h1 { letter-spacing: -1.5px; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .project-item { grid-template-columns: 1fr; gap: 12px; }
+    .project-num { display: none; }
+    #about { grid-template-columns: 1fr; gap: 60px; padding: 60px 24px; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#hero">MU<span>.</span></a>
+  <ul>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="orb"></div>
+    <div class="hero-label">Available for Internship · Karachi, Pakistan</div>
+    <h1>
+      Muhammad<br/>
+      <span class="highlight">Ubaid</span><br/>
+      <span class="line2">Idrees</span>
+    </h1>
+    <p class="hero-desc">
+      BS Artificial Intelligence student at Dawood University of Engineering & Technology. Building intelligent systems with Python, ML, and modern AI frameworks. Passionate about turning data into decisions.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">3.49</span>
+        <span class="stat-label">Last Sem GPA</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4+</span>
+        <span class="stat-label">AI Projects</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4th</span>
+        <span class="stat-label">Semester</span>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#projects">View Projects</a>
+      <a class="btn-secondary" href="#contact">Get in Touch</a>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label">Capabilities</div>
+    <h2>Technical Stack</h2>
+    <div class="skills-grid fade-up">
+      <div class="skill-group">
+        <div class="skill-group-title">Languages</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">C++</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Java</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">AI / ML</div>
+        <div class="skill-tags">
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Deep Learning</span>
+          <span class="tag">NLP</span>
+          <span class="tag">LangChain</span>
+          <span class="tag">OpenCV</span>
+          <span class="tag">Computer Vision</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Frameworks</div>
+        <div class="skill-tags">
+          <span class="tag">TensorFlow</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">Scikit-learn</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">Flask</span>
+          <span class="tag">React</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Tools</div>
+        <div class="skill-tags">
+          <span class="tag">Git</span>
+          <span class="tag">GitHub</span>
+          <span class="tag">VS Code</span>
+          <span class="tag">Jupyter</span>
+          <span class="tag">Google Colab</span>
+          <span class="tag">Linux</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label">Work</div>
+    <h2>Technical Projects</h2>
+    <div class="projects-list">
+
+      <div class="project-item fade-up">
+        <div class="project-num">01</div>
+        <div class="project-body">
+          <h3>RaahIQ — Smart Commute Planner</h3>
+          <p>An AI-powered commute assistant that predicts travel times and suggests optimal routes by integrating real-time traffic data with machine learning models to improve daily travel planning.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">Machine Learning</span>
+            <span class="tech-pill">Real-time Data</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-item fade-up">
+        <div class="project-num">02</div>
+        <div class="project-body">
+          <h3>AhqameSharyat — Islamic Study App</h3>
+          <p>A multilingual app providing tafseer, verse browsing, and AI-powered Q&A for interactive and accessible study of Islamic texts. Full-stack web application with NLP integration.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Flask</span>
+            <span class="tech-pill">React</span>
+            <span class="tech-pill">NLP</span>
+            <span class="tech-pill">Multilingual</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-item fade-up">
+        <div class="project-num">03</div>
+        <div class="project-body">
+          <h3>Resume Analyzer — AI Career Tool</h3>
+          <p>An NLP-based system that parses resumes and matches them with job descriptions using keyword extraction, skill-matching, and scoring to highlight candidate strengths and gaps. Deployed as a full web app.</p>
+          <div class="project-tech">
+            <span class="tech-pill">NLP</span>
+            <span class="tech-pill">Flask</span>
+            <span class="tech-pill">React</span>
+            <span class="tech-pill">Keyword Extraction</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-item fade-up">
+        <div class="project-num">04</div>
+        <div class="project-body">
+          <h3>SMS Spam Detector</h3>
+          <p>A machine learning classifier for spam detection using Naïve Bayes and logistic regression, achieving high accuracy in distinguishing spam from legitimate SMS messages.</p>
+          <div class="project-tech">
+            <span class="tech-pill">Python</span>
+            <span class="tech-pill">Naïve Bayes</span>
+            <span class="tech-pill">Logistic Regression</span>
+            <span class="tech-pill">Scikit-learn</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT (Education + Certs) -->
+  <section id="about">
+    <div>
+      <div class="section-label">Background</div>
+      <h2>Education</h2>
+      <div class="timeline-item fade-up">
+        <div class="timeline-date">2024 – Present</div>
+        <div class="timeline-title">BS Artificial Intelligence</div>
+        <div class="timeline-sub">Dawood University of Engineering & Technology<br/>Karachi, Pakistan · 4th Semester</div>
+        <div class="gpa-badge">CGPA 3.32 · Last Sem 3.49</div>
+      </div>
+      <div style="margin-top: 40px; padding-top: 40px; border-top: 1px solid var(--border);">
+        <div class="section-label" style="margin-bottom: 20px;">Coursework Highlights</div>
+        <div class="skill-tags">
+          <span class="tag">Data Structures & Algorithms</span>
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Computer Vision</span>
+          <span class="tag">NLP</span>
+          <span class="tag">Database Systems</span>
+          <span class="tag">OOP</span>
+          <span class="tag">Probability & Statistics</span>
+          <span class="tag">Linear Algebra</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">Recognition</div>
+      <h2>Certifications</h2>
+      <div class="timeline-item fade-up">
+        <div class="timeline-date">March 2026</div>
+        <div class="timeline-title">Transform Ideas into Action with Copilot Chat</div>
+        <div class="timeline-sub">Microsoft · Certificate of Completion</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-date">2026</div>
+        <div class="timeline-title">LangChain Mysteries</div>
+        <div class="timeline-sub">JS Bank PROCOM 2026 · Certificate of Participation</div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="timeline-date">2026</div>
+        <div class="timeline-title">Navigating the Barriers: Interdisciplinary Value of AI</div>
+        <div class="timeline-sub">3rd International Conference · Dawood University of Engineering & Technology</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-label">Let's Connect</div>
+    <h2>Open to<br/>Opportunities</h2>
+    <p style="color: var(--muted); max-width: 440px; margin: 0 auto; font-size: 13px; line-height: 1.8;">
+      Actively seeking internships at software houses and AI labs. Available for collaboration, freelance projects, and full-time roles post-graduation.
+    </p>
+    <div class="contact-links">
+      <a class="contact-link" href="tel:+923323163610">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.69a16 16 0 006.29 6.29l1.06-1.06a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        +92 332 316 3610
+      </a>
+      <a class="contact-link" href="https://linkedin.com" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a class="contact-link" href="https://github.com" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="contact-link" href="mailto:ubaid@example.com">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email Me
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© 2026 Muhammad Ubaid Idrees</span>
+  <span>BS Artificial Intelligence · Dawood University</span>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
